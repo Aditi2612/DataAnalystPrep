@@ -10,7 +10,6 @@
 SELECT MAX(salary) AS SecondHighestSalary
 FROM Employee
 WHERE salary < (SELECT MAX(salary) FROM Employee);
-GO
 
 
 ------------------------------------------------
@@ -22,7 +21,6 @@ FROM Employee
 ORDER BY salary DESC
 LIMIT 1 OFFSET 1;
 -- (In SQL Server use: OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY)
-GO
 
 
 ------------------------------------------------
@@ -36,4 +34,3 @@ FROM (
     FROM Employee
 ) t
 WHERE rnk = 2;
-GO
