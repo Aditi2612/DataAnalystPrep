@@ -1,0 +1,37 @@
+-- ============================================
+-- Day 4 — CTEs (Common Table Expressions)
+-- employees: id, name, department, salary
+-- WITH name AS (inner query) → then use it in the main query
+-- ============================================
+
+-- 1. Departments where total salary > 200000
+WITH dept_total AS (
+    SELECT department, SUM(salary) AS total
+    FROM employees
+    GROUP BY department
+)
+SELECT department, total
+FROM dept_total
+WHERE total > 200000;
+
+-- 2. Top 2 earners in each department (CTE + window function)
+WITH ranked AS (
+    SELECT name, department, salary,
+           RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk
+    FROM employees
+)
+SELECT name, department, salary
+FROM ranked
+WHERE rnk < 3;
+
+-- ============================================
+-- CTEs make complex queries readable (define step, then use it).
+-- The "top N per group" pattern (CTE + RANK + WHERE rnk <= N) is a
+-- VERY common interview question.
+--
+-- PARTITION BY vs ORDER BY — the reliable model:
+--   PARTITION BY = the GROUPS you want separate calcs for ("each dept")
+--   ORDER BY     = what decides the RANK/sequence ("by salary")
+-- Quick cue: "within/each/per" → PARTITION. But when "by" appears,
+-- ask "is it a group or a ranking?" ("group by"=GROUP, "by salary"=ORDER)
+-- ============================================
