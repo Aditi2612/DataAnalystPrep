@@ -1,0 +1,18 @@
+-- Day 5 — LAG / LEAD window functions
+-- sales: id, month, revenue
+
+-- 1. Each month's revenue + NEXT month's revenue
+SELECT month, revenue,
+       LEAD(revenue) OVER (ORDER BY month) AS next_revenue
+FROM sales;
+
+-- 2. Month-over-month change (this month - last month)
+SELECT month, revenue,
+       revenue - LAG(revenue) OVER (ORDER BY month) AS mom_change
+FROM sales;
+
+-- KEY:
+-- LAG = look BACK one row (lag behind). First row = NULL.
+-- LEAD = look FORWARD one row (take the lead). Last row = NULL.
+-- USE: put last/next value beside current → subtract → get change/growth.
+-- Great for year-over-year or month-over-month trends.
