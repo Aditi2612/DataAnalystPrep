@@ -1,0 +1,20 @@
+-- Day 6 — CASE statements (SQL's if-else)
+-- employees: id, name, salary
+
+-- 1. Label each employee Above/Below Average (>70000)
+SELECT name, salary,
+       CASE WHEN salary > 70000 THEN 'Above Average'
+            ELSE 'Below Average'
+       END AS salary_label
+FROM employees;
+
+-- 2. Conditional aggregation: count high vs low earners in one query
+SELECT
+    SUM(CASE WHEN salary > 100000 THEN 1 ELSE 0 END) AS above_count,
+    SUM(CASE WHEN salary <= 100000 THEN 1 ELSE 0 END) AS below_count
+FROM employees;
+
+-- KEY:
+-- CASE WHEN cond THEN x ELSE y END = if-else per row. First match wins.
+-- SUM(CASE WHEN cond THEN 1 ELSE 0 END) = count rows meeting a condition
+--   (conditional aggregation — very common interview pattern)
